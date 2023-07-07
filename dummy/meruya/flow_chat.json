@@ -1,0 +1,22 @@
+[
+    {
+        "uuid": "chat_1",
+        "page_text": "Terima kasih sudah menghubungi xxx Meruya Silahkan ketik restoran yang diinginkan:",
+        "options_group": ".list_restoran"
+    },
+    {
+        "uuid": "chat_2",
+        "page_text": "Silahkan ketik metode pemesanan yang diinginkan:",
+        "options_group": "opt_1"
+    },
+    {
+        "uuid": "chat_3",
+        "page_text": "Silahkan lakukan pemesanan melalui link Microsite berikut:",
+        "options_group": ".microsite_url"
+    },
+    {
+        "uuid": "chat_4",
+        "page_text": "Halo, Selamat dateng di {id_resto}\n\nSilahkan pilih menu yang ingin dipesan.\n\n",
+        "options_group": ".list_menu_restoran"
+    }
+]

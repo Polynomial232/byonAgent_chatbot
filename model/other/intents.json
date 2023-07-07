@@ -1,0 +1,16 @@
+{
+    "intents": [
+        {
+            "id": "resto_1",
+            "pattern": "BCD Bebek Geprek"
+        },
+        {
+            "id": "flow_opt_1",
+            "pattern": "Via Microsite"
+        },
+        {
+            "id": "flow_opt_2",
+            "pattern": "Via WhatsApp"
+        }
+    ]
+}

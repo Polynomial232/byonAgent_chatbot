@@ -1,0 +1,24 @@
+{
+    "intents": [
+        {
+            "id": "resto_1",
+            "pattern": "BCD Ayam Geprek"
+        },
+        {
+            "id": "resto_2",
+            "pattern": "Siomay Indonesia ABC"
+        },
+        {
+            "id": "resto_3",
+            "pattern": "Pempek ABC"
+        },
+        {
+            "id": "flow_opt_1",
+            "pattern": "Via Microsite"
+        },
+        {
+            "id": "flow_opt_2",
+            "pattern": "Via WhatsApp"
+        }
+    ]
+}

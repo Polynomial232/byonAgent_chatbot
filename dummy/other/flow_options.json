@@ -1,0 +1,14 @@
+[
+    {
+        "uuid": "flow_opt_1",
+        "options_group": "opt_1",
+        "option_text": "Via Microsite",
+        "option_goto": "chat_3"
+    },
+    {
+        "uuid": "flow_opt_2",
+        "options_group": "opt_1",
+        "option_text": "Via WhatsApp",
+        "option_goto": "chat_4"
+    }
+]

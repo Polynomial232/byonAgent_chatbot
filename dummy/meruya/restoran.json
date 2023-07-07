@@ -1,0 +1,17 @@
+[
+    {
+        "uuid": "resto_1",
+        "nama": "BCD Ayam Geprek",
+        "status_buka": true
+    },
+    {
+        "uuid": "resto_2",
+        "nama": "Siomay Indonesia ABC",
+        "status_buka": true
+    },
+    {
+        "uuid": "resto_3",
+        "nama": "Pempek ABC",
+        "status_buka": false
+    }
+]

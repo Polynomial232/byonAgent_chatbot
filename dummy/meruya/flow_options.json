@@ -1,0 +1,32 @@
+[
+    {
+        "uuid": "flow_opt_1",
+        "options_group": ".list_restoran",
+        "option_text": null,
+        "option_goto": "chat_2"
+    },
+    {
+        "uuid": "flow_opt_2",
+        "options_group": "opt_1",
+        "option_text": "Via Microsite",
+        "option_goto": "chat_3"
+    },
+    {
+        "uuid": "flow_opt_3",
+        "options_group": "opt_1",
+        "option_text": "Via WhatsApp",
+        "option_goto": "chat_4"
+    },
+    {
+        "uuid": "flow_opt_4",
+        "options_group": ".microsite_url",
+        "option_text": null,
+        "option_goto": null
+    },
+    {
+        "uuid": "flow_opt_5",
+        "options_group": ".list_menu_restoran",
+        "option_text": null,
+        "option_goto": null
+    }
+]
