@@ -1,0 +1,30 @@
+[
+    {
+        "id_flow_option": 1,
+        "group_id": "option_group_1",
+        "option_text": null,
+        "option_goto": "2",
+        "table_name": "restaurants"
+    },
+    {
+        "id_flow_option": 2,
+        "group_id": "option_group_2",
+        "option_text": "Via Microsite",
+        "option_goto": "4",
+        "table_name": null
+    },
+    {
+        "id_flow_option": 3,
+        "group_id": "option_group_2",
+        "option_text": "Via WhatsApp chat",
+        "option_goto": "3",
+        "table_name": null
+    },
+    {
+        "id_flow_option": 4,
+        "group_id": "option_group_3",
+        "option_text": null,
+        "option_goto": "pesan",
+        "table_name": "menus"
+    }
+]

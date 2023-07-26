@@ -1,22 +1,20 @@
-# pylint: disable=no-name-in-module, too-few-public-methods
-
 """ docstring """
 
-import os
-import json
-from fastapi import FastAPI, status, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-import requests
 from decouple import config
 
-from classes.PredictResponse import PredictResponse
-from classes.Train import Train
-from functions import *
+from utils.get_response_bot import fuzzy_check
+from classes.Chatbot_Agent import Chatbot_Agent
+
+LINK = config("MICROSITE_URL")
+IP = config("IP")
 
 app = FastAPI()
 
 origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -25,100 +23,60 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-IP = config("IP")
-FILENAME = 'dataset.json'
-
 @app.get('/')
 async def index():
     """ docstring """
 
     return 0
 
-@app.get('/{region}/bot-response')
-async def bot_response(text, region, agent_number, customer_number, id_user, chat_uuid):
+@app.get('/response')
+async def get_response(message, sender, receiver):
     """ docstring """
+    
+    chatbot_agent = Chatbot_Agent(IP)
 
-    predict_response = PredictResponse(region)
-    predict = predict_response.predict(text)
-    response_bot_detail = predict_response.get_response(predict)
-    fuzzy_prob = await fuzzy_check(text, response_bot_detail.get('pattern'))
-
-    if fuzzy_prob < 70 and predict[1] < 70:
-        message = "restoran tersebut tidak tersedia"
+    if not message:
+        id_flow_page = 1
+        id_restaurant = 1
     else:
-        check_open = requests.get(f"http://{IP}:8000/dummy/restoran/{region}/{response_bot_detail.get('id')}")
-        if not check_open.json().get("status_buka"):
-            message = "restoran tersebut tidak tersedia"
+        last_message = chatbot_agent.get_last_message(sender, receiver)
+        id_flow_page = last_message.get("id_flow_page") if last_message.get("id_flow_page") else 1
+        id_restaurant = last_message.get("id_restaurant") if last_message.get("id_restaurant") else 1
+
+        if "resto" in message.lower():
+            id_flow_page = 1
         else:
-            message = await get_message(id_user, chat_uuid, region, response_bot_detail.get('id'))
+            id_flow_page, id_restaurant = fuzzy_check(message, id_flow_page, id_restaurant)
+
+    wa_messages = []
+    if id_flow_page == chatbot_agent.get_last_message(sender, receiver).get("id_flow_page"):
+        wa_messages.append("Silahkan kirim pesan kembali")
+    
+    chatbot_agent.post_last_message({
+        "sender": sender,
+        "receiver": receiver,
+        "message": message,
+        "id_flow_page": id_flow_page,
+        "id_restaurant": id_restaurant
+    })
+
+    if id_flow_page == "pesan":
+        wa_message = "pesan ke agent"
+    else:
+        wa_message = chatbot_agent.get_message(id_flow_page, id_restaurant) if id_flow_page != -1 else "no more"
+    
+    wa_messages.append(wa_message)
 
     return {
-        "message": message,
-        "bot_detail": response_bot_detail,
-        "dl_probabilitas": predict[1].item(),
-        "fuzzy_probabilitas": fuzzy_prob,
-        "agent_number": agent_number,
-        "customer_number": customer_number
+        "message": "success",
+        "wa_messages": wa_messages,
+        "sender": sender,
+        "receiver": receiver,
+        "data": {
+            "id_flow_page" : id_flow_page, 
+            "id_restaurant": id_restaurant
+        }
     }
-
-@app.get('/{region}/train-model')
-async def train_model(region, epochs=400):
-    """ docstring """
-
-    os.makedirs(f"model/{region}", exist_ok=True)
-
-    restoran_dataset = requests.get(f"http://{IP}:8000/dummy/restoran/{region}")
-    flow_options_dataset = requests.get(f"http://{IP}:8000/dummy/flow-options/{region}")
-
-    intents = list()
-    temp_intents = restoran_dataset.json() + flow_options_dataset.json()
-
-    for intent in temp_intents:
-        if intent.get("nama") is not None:
-            pattern = intent.get("nama")
-        else:
-            pattern = intent.get("option_text")
-
-        intents.append({
-            "id":  intent.get("uuid"),
-            "pattern": pattern
-        })
-
-    with open(f"model/{region}/intents.json", "w", encoding='utf-8') as f:
-        json.dump({"intents": intents}, f, indent=4)
-
-    train = Train(region, int(epochs))
-    _ = train.start()
-
-    currect_train = train.currect_train()
-    train.plot_history()
-
-    return currect_train
-
-@app.get('/{region}/current-accuracy')
-async def current_accuracy(region):
-    """ docstring """
-
-    return json.loads(open(f'model/{region}/current.json', encoding='utf-8').read())
-
-@app.get('/{region}/intents')
-def get_intents(region):
-    """ docstring """
-
-    return json.loads(open(f'model/{region}/intents.json', encoding='utf-8').read())
-
-@app.get('/{region}/intents/{intent_id}')
-def get_intent_by_id(intent_id, region):
-    """ docstring """
-
-    intents = get_intents(region).get('intents')
-    get_data = [item for item in intents if item.get('id')==intent_id]
-    if get_data:
-        return get_data
-
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-    )
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=9000)

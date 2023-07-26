@@ -1,0 +1,18 @@
+[
+    {
+        "id_restaurant": 1,
+        "name": "BCD Ayam Geprek"
+    },
+    {
+        "id_restaurant": 4,
+        "name": "ABC Ayam Geprek"
+    },
+    {
+        "id_restaurant": 2,
+        "name": "Siomay Indonesia ABC"
+    },
+    {
+        "id_restaurant": 3,
+        "name": "Pempek ABC Semesta"
+    }
+]

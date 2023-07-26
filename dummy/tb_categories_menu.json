@@ -1,0 +1,22 @@
+[
+    {
+        "id_category_menu": 1,
+        "id_restaurant": 1,
+        "name": "Menu Ayam"
+    },
+    {
+        "id_category_menu": 2,
+        "id_restaurant": 1,
+        "name": "Menu Tambahan"
+    },
+    {
+        "id_category_menu": 3,
+        "id_restaurant": 1,
+        "name": "Minuman"
+    },
+    {
+        "id_category_menu": 4,
+        "id_restaurant": 2,
+        "name": "Minuman"
+    }
+]

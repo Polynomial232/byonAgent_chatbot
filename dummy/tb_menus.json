@@ -1,0 +1,56 @@
+[
+    {
+        "id_menu": 1,
+        "id_category_menu": 1,
+        "name": "Ayam geprek sambal matah + Nasi",
+        "price": 25000
+    },
+    {
+        "id_menu": 2,
+        "id_category_menu": 1,
+        "name": "Ayam geprek sambal bawang + Nasi",
+        "price": 23000
+    },
+    {
+        "id_menu": 3,
+        "id_category_menu": 2,
+        "name": "Tempe geprek",
+        "price": 10000
+    },
+    {
+        "id_menu": 4,
+        "id_category_menu": 2,
+        "name": "Tahu geprek",
+        "price": 10000
+    },
+    {
+        "id_menu": 5,
+        "id_category_menu": 2,
+        "name": "Jamur goreng",
+        "price": 10000
+    },
+    {
+        "id_menu": 6,
+        "id_category_menu": 3,
+        "name": "Es teh tawar/manis",
+        "price": 5000
+    },
+    {
+        "id_menu": 7,
+        "id_category_menu": 3,
+        "name": "Air mineral",
+        "price": 5000
+    },
+    {
+        "id_menu": 8,
+        "id_category_menu": 3,
+        "name": "Es jeruk",
+        "price": 7000
+    },
+    {
+        "id_menu": 9,
+        "id_category_menu": 4,
+        "name": "Es jeruk Siomay",
+        "price": 7000
+    }
+]

@@ -1,0 +1,22 @@
+[
+    {
+        "id_flow_page": 1,
+        "page_text": "Terima kasih sudah menghubungi xxx Meruya. Silahkan ketik restoran yang diinginkan:",
+        "option_group": "option_group_1"
+    },
+    {
+        "id_flow_page": 2,
+        "page_text": "Silahkan ketik metode pemesanan yang diinginkan:",
+        "option_group": "option_group_2"
+    },
+    {
+        "id_flow_page": 3,
+        "page_text": "Halo selamat datang di {restaurant_name}\n\nSilahkan pilih menu yang ingin dipesan.",
+        "option_group": "option_group_3"
+    },
+    {
+        "id_flow_page": 4,
+        "page_text": "Silahkan lakukan pemesanan melalui link Microsite berikut:\n\n{link}",
+        "option_group": null
+    }
+]

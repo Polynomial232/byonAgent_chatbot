@@ -3,7 +3,7 @@
 """ docstring """
 
 import json
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -29,57 +29,83 @@ async def index():
 
 """ DUMMY DATA API OPEN """
 
-@app.get('/dummy/restoran/{region}')
-def get_dummy_restoran(region):
-    with open(f"{region}/restoran.json", encoding='utf-8') as f:
-        return json.loads(f.read())
+@app.get('/flow-pages')
+def get_flow_pages():
+    return json.loads(open('tb_flow_pages.json', 'r', encoding='utf-8').read())
 
-@app.get('/dummy/restoran/{region}/{id_resto}')
-def get_dummy_restoran_id(region, id_resto):
-    restoran = get_dummy_restoran(region)
-    for i in restoran:
-        if i.get("uuid") == id_resto:
-            return i
+@app.get('/flow-pages/{id_flow_page}')
+def get_flow_pages_id(id_flow_page):
+    flow_pages = get_flow_pages()
+    for flow_page in flow_pages:
+        if str(flow_page.get("id_flow_page")) == id_flow_page:
+            return flow_page
 
-@app.get('/dummy/menu/{region}/{restoran}')
-def get_dummy_restoran_menu(region, restoran):
-    with open(f"{region}/menu_{restoran}.json", encoding='utf-8') as f:
-        return json.loads(f.read())
+@app.get('/flow-options')
+def get_flow_options():
+    return json.loads(open('tb_flow_options.json', 'r', encoding='utf-8').read())
 
-@app.get('/dummy/flow-chat/{region}')
-def get_dummy_flow_chat(region):
-    try:
-        with open(f"{region}/flow_chat.json", encoding='utf-8') as f:
-            return json.loads(f.read())
-    except:
-        return False
+@app.get('/flow-options/{group_id}')
+def get_flow_options_group_id(group_id):
+    flow_options = get_flow_options()
 
-@app.get('/dummy/flow-chat/{region}/{id}')
-def get_dummy_flow_chat_id(region, id):
-    flow = get_dummy_flow_chat(region)
+    return [option for option in flow_options if option.get("group_id") == group_id]
 
-    if not flow:
-        return False
+@app.get('/restaurants')
+def get_restaurants():
+    return json.loads(open('tb_restaurants.json', 'r', encoding='utf-8').read())
 
-    for i in flow:
-        if i.get("uuid") == id:
-            return i
+@app.get('/restaurants/{id_restaurant}')
+def get_restaurants_id(id_restaurant):
+    restaurants = get_restaurants()
+    for restaurant in restaurants:
+        if str(restaurant.get("id_restaurant")) == id_restaurant:
+            return restaurant
 
-@app.get('/dummy/flow-options/{region}')
-def get_dummy_flow_options(region, group=None):
-    try:
-        with open(f"{region}/flow_options.json", encoding='utf-8') as f:
-            flow_options = json.loads(f.read())
+@app.get('/categories-menus')
+def get_categories():
+    categories = json.loads(open('tb_categories_menu.json', 'r', encoding='utf-8').read())
+    for idx, category in enumerate(categories):
+        categories[idx]['menus'] = []
+        for menu in get_menus_id_category(category.get("id_category_menu")):
+            categories[idx]['menus'].append(menu)
+    
+    return categories
 
-        if group is None:
-            return flow_options
-        
-        for option in flow_options:
-            if option.get("options_group") == group:
-                return option
-    except:
-        return False
+@app.get('/categories-menus/{id_restaurant}')
+def get_categories_id_restaurant(id_restaurant):
+    return [categories for categories in get_categories() if str(categories.get("id_restaurant")) == id_restaurant]
 
+@app.get('/last-message')
+def get_last_message(sender, receiver):
+    conversations = json.loads(open('tb_conversations.json', 'r', encoding='utf-8').read())
+    for conversation in conversations:
+        if conversation.get("sender") == sender and conversation.get("receiver") == receiver:
+            return conversation
+    return 0
+
+@app.post('/last-message')
+async def post_last_message(request: Request):
+    request = await request.json()
+
+    conversations = json.loads(open('tb_conversations.json', 'r', encoding='utf-8').read())
+    for idx, conversation in enumerate(conversations):
+        if conversation.get("sender") == request.get("sender") and conversation.get("receiver") == request.get("receiver"):
+            conversations[idx] = request
+            break
+    else:
+        conversations.append(request)
+    
+    with open('tb_conversations.json', 'w', encoding='utf-8') as f:
+        json.dump(conversations, f, indent=4)
+    
+    return request
+
+def get_menus():
+    return json.loads(open('tb_menus.json', 'r', encoding='utf-8').read())
+
+def get_menus_id_category(id_category):
+    menus = get_menus()
+    return [menu for menu in menus if menu.get("id_category_menu") == id_category]
 
 """ DUMMY DATA API CLOSE """
 

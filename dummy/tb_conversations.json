@@ -1,0 +1,23 @@
+[
+    {
+        "sender": "001",
+        "receiver": "100",
+        "message": "saya mau ayam bcd",
+        "id_flow_page": "2",
+        "id_restaurant": 1
+    },
+    {
+        "sender": "002",
+        "receiver": "100",
+        "message": "2",
+        "id_flow_page": 1,
+        "id_restaurant": 1
+    },
+    {
+        "sender": "2",
+        "receiver": "100",
+        "message": "1",
+        "id_flow_page": "2",
+        "id_restaurant": 1
+    }
+]
