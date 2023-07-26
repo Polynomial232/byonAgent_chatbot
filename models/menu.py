@@ -1,20 +1,14 @@
 import requests
 
-class Get_Options_Table:
+class Menu:
     def __init__(self, ip, port="8000"):
         self.ip = ip
         self.port = port
 
-    def restaurants_options(self, options_template, _):
-        options = []
-        response_restaurants = requests.get(f"http://{self.ip}:{self.port}/restaurants")
+    def get_menus_by_category(self, custom_id):
+        categories_menu = requests.get(f"http://{self.ip}:{self.port}/categories-menus/{custom_id}")
 
-        for idx, response_restaurant in enumerate(response_restaurants.json()):
-            options.append(options_template[0].copy())
-            options[idx]['id_restaurant'] = response_restaurant.get('id_restaurant')
-            options[idx]['option_text'] = response_restaurant.get('name')
-            
-        return options
+        return categories_menu.json()
 
     def menus_options(self, options_template, custom_id):
         options = []

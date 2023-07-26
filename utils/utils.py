@@ -1,6 +1,12 @@
 import re
 import numpy as np
 from more_itertools import locate
+from thefuzz import process
+from thefuzz import fuzz
+
+def fuzzy_logic(text, options):
+    list_ratio = process.extract(text, options, scorer=fuzz.token_set_ratio)
+    return [ratio for ratio in list_ratio if ratio[1] >= 80]
 
 def word_extraction(sentence):
     words = re.sub("[^\w]", " ",  sentence.lower()).split()
@@ -26,22 +32,25 @@ def get_bag_of_word(sentence, allsentences):
     return np.array(bag_vector)
 
 def compare_bag_of_word(sentence_bag, all_bag):
-    indices = locate(sentence_bag, lambda x: x == 1)
-    indices = list(indices)
+    try:
+        indices = locate(sentence_bag, lambda x: x == 1)
+        indices = list(indices)
 
-    percent = []
-    for bag_of_word in all_bag:
-        get_bags = bag_of_word[indices]
-        percent.append(list(get_bags).count(1) / len(indices))
+        percent = []
+        for bag_of_word in all_bag:
+            get_bags = bag_of_word[indices]
+            percent.append(list(get_bags).count(1) / len(indices))
 
-    max_indices = locate(percent, lambda x: x == max(percent))
-    max_indices = list(max_indices)
-    get_index = max_indices[0]
+        max_indices = locate(percent, lambda x: x == max(percent))
+        max_indices = list(max_indices)
+        get_index = max_indices[0]
 
-    if len(max_indices) > 1:
+        if len(max_indices) > 1:
+            return -1
+
+        if percent[0] < 0.8:
+            return -1
+
+        return get_index
+    except:
         return -1
-
-    if percent[0] < 0.8:
-        return -1
-
-    return get_index
